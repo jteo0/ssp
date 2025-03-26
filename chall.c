@@ -3,23 +3,21 @@
 #include <unistd.h>
 #include <string.h>
 
-// WIN FUNCTION - The exploitation target
 void win(void) {
-    printf(">>> CODE REDEMPTION ACTIVATED <<<\n");
-    system("/bin/sh");  // Prize for successful exploitation
+    printf("HOW'D YOU GET HERE???\n");
+    system("/bin/sh");
 }
 
 void print(const char *msg) {
     write(1, msg, strlen(msg));
 }
 
-// Modified to force stack pivoting
 void readInput(size_t size) {
-    char input[8];  // TINY buffer - forces stack pivot
+    char input[16];
     memset(input, 0, sizeof(input));
     print("Oh, really? How come?\n");
-    read(0, input, size);  // Severe overflow now
-    printf("Fascinating. \"%.8s\", I'll take it into consideration.\n", input);
+    read(0, input, size);
+    printf("Fascinating. \"%s\", I'll take it into consideration.\n", input);
 }
 
 void meat() {
@@ -33,7 +31,7 @@ void meat() {
 
     if ((int)size < 1) {
         print("Yeah, that sounds about right.\n");
-    } else if ((int)size < 0x82) {  // Increased max size for pivot space
+    } else if ((int)size <= 17) {  // Allows slight overflow (but not enough for ROP)
         readInput(size);
     } else {
         print("Enthusiastic, are we?\n");
